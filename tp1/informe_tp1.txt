@@ -1,0 +1,9 @@
+hicimos un primer grafico y notamos un punto muy aislado (atleta 7). Como posibilidad pensamos en agregar la coma, eliminar el registro, o dejarlo....
+
+Descartamos t-test muestras independientes (pensar)
+Descartamos t-test muestra unica (pensar)
+Usamos t-test muestras apareadas para comparar los distintos climas de a pares
+
+Para medir el tema de la lluvia (item 3), pensar en correlacion de datos (se mantiene el orden relativo de los corredores independientemente del clima?)
+
+Para shufflear, hay que combinar los datos de alguna manera y labelear antes de hacer el shuffle de etiquetas; i.e, restar velocidad en dia de lluvia y velocidad en dia soleado, labelear y shufflear 
