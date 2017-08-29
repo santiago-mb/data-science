@@ -6,12 +6,16 @@ import seaborn as sns
 atleta, sol, nublado, lluvia = np.loadtxt('tiempos.txt', skiprows = 1, unpack = True)
 
 # Primera vista de los datos
-# colors = plt.cm.rainbow(np.linspace(0, 1, 3))
-# plt.scatter(atleta, sol, label = 'sol', color=colors[0])
-# plt.scatter(atleta, nublado, label = 'nublado', color=colors[1])
-# plt.scatter(atleta, lluvia, label = 'lluvia', color=colors[2])
-# plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-# plt.show()
+colors = plt.cm.rainbow(np.linspace(0, 1, 10))
+ax = plt.subplot(111)
+ax.scatter(atleta, sol, label = 'sol', color=colors[2])
+ax.scatter(atleta, nublado, label = 'nublado', color=colors[8])
+ax.scatter(atleta, lluvia, label = 'lluvia', color=colors[7])
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+# plt.savefig('scatter_clean.png')
+plt.close()
 
 # Shapiro test for normality
 # H0 = Distribucion normal de sol
@@ -35,23 +39,38 @@ print w, p
 # Como hacer el F-Test???
 
 FSolLluvia = np.var(sol) / np.var(lluvia)
+FLluviaSol = np.var(lluvia) / np.var(sol)
 FNubladoLluvia = np.var(nublado) / np.var(lluvia)
+FLluviaNublado = np.var(lluvia) / np.var(nublado)
 FSolNublado = np.var(sol) / np.var(nublado)
+FNubladoSol = np.var(nublado) / np.var(sol)
 
 dfSol = len(sol) - 1
 dfLluvia = len(lluvia) - 1
 dfNublado = len(nublado) - 1
 
-pSL = sc.stats.f.sf(FSolLluvia, dfSol, dfLluvia)
-pNL = sc.stats.f.sf(FNubladoLluvia, dfNublado, dfLluvia)
-pSN = sc.stats.f.sf(FSolNublado, dfSol, dfNublado)
+# F-Test
+# H0 = Igual varianza sol lluvia
+# Rechazo
+p = sc.stats.f.sf(FSolLluvia, dfSol, dfLluvia)
+p += sc.stats.f.cdf(FLluviaSol, dfLluvia, dfSol)
+print 'f-test sol-lluvia dos colas'
+print p
+# F-Test
+# H0 = Igual varianza nublado lluvia
+# Rechazo
+p = sc.stats.f.sf(FNubladoLluvia, dfNublado, dfLluvia)
+p += sc.stats.f.cdf(FLluviaNublado, dfLluvia, dfNublado)
+print 'f-test nublado-lluvia dos colas'
+print p
+# F-Test
+# H0 = Igual varianza nublado sol
+# No rechazo
+p = sc.stats.f.sf(FSolNublado, dfSol, dfNublado)
+p += sc.stats.f.cdf(FNubladoSol, dfNublado, dfSol)
+print 'f-test sol-nublado dos colas'
+print p
 
-print 'f-test sol-lluvia'
-print pSL
-print 'f-test nublado-lluvia'
-print pNL
-print 'f-test sol-nublado'
-print pSN
 
 # T-Test Welch (independiente sin varianzas iguales)
 # H0 = Distribucion sol lluvia con igual media
@@ -131,23 +150,59 @@ print np.var(nublado)
 print 'varianza lluvia'
 print np.var(lluvia)
 
+# # Permutation Test!!!
+# # Si resta > 0 entonces lluvia > sol
+# # Si resta < 0 entonces lluvia < sol
+# delta0 = np.mean(lluvia) - np.mean(sol)
+# deltas = [delta0]
+# lluviaAndSol = np.append(sol, lluvia)
+# labels = [True for i in range(len(sol))] + [False for i in range(len(lluvia))]
+
+# for _ in range(1001):
+#   np.random.shuffle(labels)
+#   solC = 0
+#   lluviaC = 0
+#   for i in range(len(labels)):
+#     if labels[i]:
+#       solC += lluviaAndSol[i]
+#     else:
+#       lluviaC += lluviaAndSol[i]
+#   solC /= float(len(sol))
+#   lluviaC /= float(len(lluvia))
+#   deltas.append(lluviaC - solC)
+
+# values, bins, _ = plt.hist(deltas)
+# areaTotal = sum(np.diff(bins)*values)
+# indice = next(i for i in range(len(bins)) if (lambda y : y >= delta0)(bins[i]))
+
+# newBins = [delta0]
+# newBins += bins[indice:]
+# newValues = values[indice-1:]
+
+# areaDerecha = sum(np.diff(newBins)*newValues)
+
+# print areaDerecha / areaTotal
+# # plt.hist(deltas)
+# plt.axvline(delta0, color='red', linestyle='dashed', linewidth=2)
+# plt.show()
+
 # Permutation Test!!!
 # Si resta > 0 entonces lluvia > sol
 # Si resta < 0 entonces lluvia < sol
 delta0 = np.mean(lluvia) - np.mean(sol)
 deltas = [delta0]
-lluviaAndSol = np.append(sol, lluvia)
-labels = [True for i in range(len(sol))] + [False for i in range(len(lluvia))]
 
 for _ in range(1001):
-  np.random.shuffle(labels)
+  flips = np.random.choice([True, False], len(sol))
   solC = 0
   lluviaC = 0
-  for i in range(len(labels)):
-    if labels[i]:
-      solC += lluviaAndSol[i]
+  for i in range(len(flips)):
+    if flips[i]:
+      solC += lluvia[i]
+      lluviaC += sol[i]
     else:
-      lluviaC += lluviaAndSol[i]
+      solC += sol[i]
+      lluviaC += lluvia[i]
   solC /= float(len(sol))
   lluviaC /= float(len(lluvia))
   deltas.append(lluviaC - solC)
@@ -158,7 +213,7 @@ indice = next(i for i in range(len(bins)) if (lambda y : y >= delta0)(bins[i]))
 
 newBins = [delta0]
 newBins += bins[indice:]
-newValues = values[indice-1:]
+newValues = values[indice:]
 
 areaDerecha = sum(np.diff(newBins)*newValues)
 
