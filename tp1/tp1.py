@@ -56,19 +56,19 @@ print pSN
 # T-Test Welch (independiente sin varianzas iguales)
 # H0 = Distribucion sol lluvia con igual media
 # Rechazo
-t, p = sc.stats.ttest_ind(sol, lluvia, False)
+t, p = sc.stats.ttest_ind(sol, lluvia, equal_var = False)
 print 't-test welch sol-lluvia'
 print t, p
 
 # # H0 = Distribucion sol nublado con igual media
 # # No rechazo
-# t, p = sc.stats.ttest_ind(sol, nublado, False)
+# t, p = sc.stats.ttest_ind(sol, nublado, equal_var = False)
 # print 't-test welch sol-nublado'
 # print t, p
 
 # H0 = Distribucion lluvia nublado con igual media
 # Rechazo
-t, p = sc.stats.ttest_ind(lluvia, nublado, False)
+t, p = sc.stats.ttest_ind(lluvia, nublado, equal_var = False)
 print 't-test welch lluvia-nublado'
 print t, p
 
