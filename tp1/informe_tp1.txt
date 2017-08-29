@@ -1,9 +1,18 @@
-hicimos un primer grafico y notamos un punto muy aislado (atleta 7). Como posibilidad pensamos en agregar la coma, eliminar el registro, o dejarlo....
+Hicimos un primer grafico y notamos un punto muy aislado (atleta 7). Como posibilidad pensamos en agregar la coma, eliminar el registro, o dejarlo....
 
-Descartamos t-test muestras independientes (pensar)
-Descartamos t-test muestra unica (pensar)
-Usamos t-test muestras apareadas para comparar los distintos climas de a pares
+Descartamos t-test muestras independientes: un t-test usual chequea si dos muestras independientes tienen la misma media. Sin embargo, en este caso, sabemos que las muestras tienen un factor comun: el corredor. Por lo tanto, no tiene sentido asumir independencia y es mas robusto utilizar la nocion de factor común para utilizar el t-test con muestras apareadas.
 
-Para medir el tema de la lluvia (item 3), pensar en correlacion de datos (se mantiene el orden relativo de los corredores independientemente del clima?)
+Descartamos t-test muestra unica: estamos comparando muestras entre sí, no encontramos la necesidad de comparar una muestra contra un valor fijo 
 
-Para shufflear, hay que combinar los datos de alguna manera y labelear antes de hacer el shuffle de etiquetas; i.e, restar velocidad en dia de lluvia y velocidad en dia soleado, labelear y shufflear 
+Usamos t-test muestras apareadas para comparar los distintos climas de a pares [ver t-test muestras independientes]
+
+Usamos la correlación de Pearson para probar que la velocidad relativa de los atletas no varía entre sol y nublado (pero si con lluvia)
+
+La velocidad en días de lluvia es independiente del atleta? Si. Pensar en la varianza de los días de lluvia vs los otros climas: es muy baja (y en los otros alta), por lo cual podemos decir que no importa el atleta y su velocidad: si corres un día de lluvia, tu velocidad va a estar alrededor de la media. Además, la lluvia casi no esta correlacionada con sol/nublado (el orden relativo de los corredores no se mantiene en absoluto), por lo que podemos concluir que no importa cuán rápido sea el atleta, su velocidad sera independiente en días de lluvia.
+
+Para shufflear, hay que combinar los datos de alguna manera y labelear antes de hacer el shuffle de etiquetas; i.e, restar velocidad en dia de lluvia y velocidad en dia soleado, labelear y shufflear.
+
+
+Preguntas
+- Se puede trasponer los datos y hacer algo con eso (o sea, tener doce distribuciones de "tiempos de atleta en distintas condiciones climáticas"? Tiene sentido? Que representaría cada variable/muestra?
+ 
