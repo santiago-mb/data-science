@@ -207,7 +207,8 @@ for _ in range(1001):
   lluviaC /= float(len(lluvia))
   deltas.append(lluviaC - solC)
 
-values, bins, _ = plt.hist(deltas)
+ax = plt.subplot(111)
+values, bins, _ = ax.hist(deltas)
 areaTotal = sum(np.diff(bins)*values)
 indice = next(i for i in range(len(bins)) if (lambda y : y >= delta0)(bins[i]))
 
@@ -218,6 +219,12 @@ newValues = values[indice:]
 areaDerecha = sum(np.diff(newBins)*newValues)
 
 print areaDerecha / areaTotal
-# plt.hist(deltas)
-plt.axvline(delta0, color='red', linestyle='dashed', linewidth=2)
+
+box = ax.get_position()
+plt.axvline(delta0, color='red', linestyle='dashed', linewidth=2, label = 'p-value')
+ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
+plt.xlabel('delta')
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.savefig('permutation.png')
 plt.show()
+plt.close()
