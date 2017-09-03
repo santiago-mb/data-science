@@ -36,8 +36,6 @@ w, p = sc.stats.shapiro(lluvia)
 print 'shapiro lluvia'
 print w, p
 
-# Como hacer el F-Test???
-
 FSolLluvia = np.var(sol) / np.var(lluvia)
 FLluviaSol = np.var(lluvia) / np.var(sol)
 FNubladoLluvia = np.var(nublado) / np.var(lluvia)
