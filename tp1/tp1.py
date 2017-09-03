@@ -225,6 +225,6 @@ plt.axvline(delta0, color='red', linestyle='dashed', linewidth=2, label = 'p-val
 ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
 plt.xlabel('delta')
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.savefig('permutation.png')
+# plt.savefig('permutation.png')
 plt.show()
-plt.close()
+# plt.close()
