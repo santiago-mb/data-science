@@ -1,4 +1,7 @@
 Dudas:
 1) Si dividimos en Test y CrossVal, es comparable si no son las mismas separaciones para cada dataset?
+	Ya fue, me cague en todo y saque afuera la seleccion de indices para esto
 2) Si eliminamos el Test, podemos tomar el promedio de los tprs y fprs para graficar la curva roc?
+	No eliminamos Test
 3) Tomamos P o S, o los dos como True Label?
+	Tomamos S porque si
