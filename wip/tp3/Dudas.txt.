@@ -5,3 +5,6 @@ Dudas:
 	No eliminamos Test
 3) Tomamos P o S, o los dos como True Label?
 	Tomamos S porque si
+
+
+4) En "Features: Mean and StDev para cada Banda de frecuencias para los datos desnormalizados" F1/prec/recall dan cero y hay un warning raro "F-score is ill-defined and being set to 0.0 due to no predicted samples." / "Precision is ill-defined and being set to 0.0 due to no predicted samples." . Que onda?
